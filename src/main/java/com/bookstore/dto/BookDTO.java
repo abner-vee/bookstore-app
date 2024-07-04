@@ -16,7 +16,6 @@ public class BookDTO {
     private String ISBN;
     private double price;
     private LocalDateTime publicationDate;
-    private AuthorVO author;
-
-    private Genre genre;
+    private Long authorId;
+    private Long genreId;
 }

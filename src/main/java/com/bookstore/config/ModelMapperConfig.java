@@ -12,7 +12,10 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setDeepCopyEnabled(true).setSkipNullEnabled(true);
+        modelMapper.getConfiguration()
+                .setDeepCopyEnabled(true)
+                .setAmbiguityIgnored(true)
+                .setSkipNullEnabled(true);
         return modelMapper;
     }
 }

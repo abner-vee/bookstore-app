@@ -3,12 +3,14 @@ package com.bookstore.service.impl;
 import com.bookstore.entity.Author;
 import com.bookstore.entity.Book;
 import com.bookstore.exceptions.APIException;
+import com.bookstore.repository.BookRepository;
 import com.bookstore.repository.UserRepository;
 import com.bookstore.service.AuthorService;
 import com.bookstore.vo.APIResponse;
 import com.bookstore.vo.AuthorVO;
 import com.bookstore.vo.BookVO;
 import com.bookstore.vo.GenreVO;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -20,16 +22,16 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class AuthorServiceImpl implements AuthorService {
     private final UserRepository userRepository;
+    private final BookRepository bookRepository;
     private final ModelMapper mapper;
     @Override
     public APIResponse<List<AuthorVO>> getAllAuthors() {
         List<AuthorVO> authorVOList =  userRepository.findAll()
                 .stream()
-                .map(author -> {
-                    return mapper.map(author, AuthorVO.class);
-                }).toList();
+                .map(author -> mapper.map(author, AuthorVO.class)).toList();
         return APIResponse.<List<AuthorVO>>builder()
                 .data(authorVOList)
                 .statusCode(200)
@@ -58,6 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
                     .build();
         }
         Author author = authorOptional.get();
+        bookRepository.deleteAllByAuthor(author);
         userRepository.delete(author);
         return APIResponse.<Void>builder()
                 .data(null)

@@ -69,11 +69,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public APIResponse<BookVO> saveBook(BookDTO request) {
-        Optional<Genre> genreOptional = genreRepository.findByName(request.getGenre().getName());
+        Optional<Genre> genreOptional = genreRepository.findById(request.getGenreId());
         if (genreOptional.isPresent()){
             Genre genre = genreOptional.get();
-            String email = SecurityContextHolder.getContext().getAuthentication().getName();
-            Optional<Author> authorOptional = userRepository.findAuthorByEmail(email);
+            Optional<Author> authorOptional = userRepository.findById(request.getAuthorId());
             if (authorOptional.isEmpty()){
                 throw APIException.builder()
                         .statusCode(404)

@@ -1,6 +1,5 @@
 package com.bookstore.vo;
 
-import com.bookstore.entity.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
